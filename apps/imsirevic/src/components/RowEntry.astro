@@ -1,0 +1,61 @@
+---
+export interface Props {
+    companyName?: string;
+    title?: string;
+    timeSpan?: {
+        start: string;
+        end: string;
+    };
+    location?: string;
+    typeOfEmployment?: string;
+    descriptionList?: string[];
+}
+
+const { companyName, title, timeSpan, descriptionList } = Astro.props;
+---
+<div class="mb-3">
+    <div class="flex flex-row dark:text-white">
+        <div class="mb-1 flex w-full items-center justify-between">
+            <div class="flex-1 dark:text-white">
+                <div class="text-xs sm:text-sm font-bold">
+                    {companyName}
+                </div>
+                <div class="text-xs italic">
+                    {Astro.props.typeOfEmployment}
+                </div>
+            </div>
+            <div class="flex-1 text-center text-xs sm:text-sm font-bold dark:text-white">
+                {title}
+            </div>
+            <div class="flex-1 text-right dark:text-white">
+                {timeSpan?.start && timeSpan?.end && (
+                    <div class="text-[10px] sm:text-sm font-bold items-end justify-end">
+                        <span>{timeSpan.start}</span>
+                        <span>-</span>
+                        <span>{timeSpan.end}</span>
+                    </div>
+                )}
+                <div class="text-[10px] sm:text-xs italic">
+                    {Astro.props.location}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <slot />
+        {/* If descriptionList is provided, display it */}
+        {descriptionList && descriptionList.length == 1 && (
+            <div class="text-xs dark:text-white">
+                {descriptionList[0]}
+            </div>
+        )}
+        {descriptionList && descriptionList.length > 1 && (
+            <ul class="list-disc pl-6 text-xs dark:text-white">
+                {descriptionList.map((item: string) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+        )}
+    </div>
+</div>

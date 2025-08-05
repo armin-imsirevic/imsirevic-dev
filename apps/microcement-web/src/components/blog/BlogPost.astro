@@ -1,0 +1,49 @@
+---
+import { categories } from '../../data/categories';
+import BlogPostImage from './BlogPostImage.astro';
+import BlogPostDate from './BlogPostDate.astro';
+import BlogPostTitle from './BlogPostTitle.astro';
+import BlogPostExcerpt from './BlogPostExcerpt.astro';
+import BlogPostCategories from './BlogPostCategories.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+    title: string;
+    excerpt: string;
+    featuredImage: ImageMetadata; // Changed to accept ImageMetadata from content collections
+    publishDate?: Date;
+    categories: string[];
+    slug?: string;
+    index: number;
+}
+
+const {
+    title,
+    excerpt,
+    featuredImage,
+    publishDate,
+    categories: postCategories,
+    slug,
+    index,
+} = Astro.props;
+
+// Validate categories against the valid categories
+const validCategories = postCategories.filter((categoryName: string) =>
+    categories.some(category => category.name === categoryName)
+);
+---
+
+<a
+  href={`/blog/${slug}`}
+  class="group flex flex-col h-full overflow-hidden bg-white rounded-lg border border-black transition-all duration-300 hover:border-primary"
+  data-aos="fade-up"
+  data-aos-delay={index * 100}
+>
+  <BlogPostImage featuredImage={featuredImage} />
+  <div class="py-4 px-4 flex flex-col flex-grow relative">
+    <BlogPostDate publishDate={publishDate} />
+    <BlogPostTitle title={title} />
+    <BlogPostExcerpt excerpt={excerpt} />
+    <BlogPostCategories validCategories={validCategories} />
+  </div>
+</a>

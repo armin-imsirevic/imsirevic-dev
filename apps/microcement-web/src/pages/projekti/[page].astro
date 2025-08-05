@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import { blogSetting } from '../../data/config';
+import PaginatedProjektLayout from '../../components/projekti/PaginatedProjektLayout.astro';
+export const prerender = true;
+
+// Get static paths for all possible pages
+export async function getStaticPaths() {
+    const allProjects = await getCollection('projekti');
+
+    // Filter projects
+    const filteredProjects = allProjects.filter(project => {
+        return import.meta.env.DEV || project.data.publish !== false;
+    });
+
+    // Sort projects by date
+    const sortedProjects = filteredProjects.sort(
+        (a, b) => {
+            const aDate = a.data.publishDate?.getTime() || 0;
+            const bDate = b.data.publishDate?.getTime() || 0;
+            return bDate - aDate;
+        }
+    );
+
+    const totalProjects = sortedProjects.length;
+    const totalPages = Math.ceil(totalProjects / blogSetting.postsPerPage);
+
+    // Create paths for all pages except page 1 (which is handled by index.astro)
+    return Array.from({ length: totalPages - 1 }, (_, i) => {
+        const page = i + 2; // Start from page 2
+        const start = (page - 1) * blogSetting.postsPerPage;
+        const end = start + blogSetting.postsPerPage;
+
+        return {
+            params: { page: String(page) },
+            props: {
+                page,
+                totalPages,
+                projects: sortedProjects.slice(start, end),
+            },
+        };
+    });
+}
+
+const { page, totalPages, projects } = Astro.props;
+
+// Redirect page 1 to the main projects page
+if (page === 1) {
+    return Astro.redirect('/projekti');
+}
+---
+
+<PaginatedProjektLayout
+    projekti={projects}
+    currentPage={page}
+    {totalPages}
+    baseUrl="/projekti"
+    title="Naši Projekti"
+    subtitle="Pogledajte naše realizovane projekte i pronađite inspiraciju za vaš prostor"
+/>

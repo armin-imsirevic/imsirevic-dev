@@ -1,0 +1,106 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CategoryPill from '../../components/ui/CategoryPill.astro';
+import Date from '../../components/ui/Date.astro';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+    const projects = await getCollection('projekti');
+    return projects.map(project => ({
+        params: { slug: project.id },
+        props: { project },
+    }));
+}
+
+interface Props {
+    project: CollectionEntry<'projekti'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+// Use SEO data from frontmatter if available, fallback to regular project data
+const seoTitle = project.data.seo?.title || project.data.title;
+const seoDescription = project.data.seo?.description || project.data.excerpt;
+
+// For SEO image, use the seo.image if provided, otherwise use the featured image
+// The Layout component expects a string for the image, so we need to handle that
+let seoImage: string | undefined = project.data.seo?.image;
+
+// If seoImage is provided but not an absolute URL, make it absolute
+if (seoImage && !seoImage.startsWith('http')) {
+    const siteUrl = import.meta.env.SITE || 'https://titan-core.vercel.app';
+    seoImage = new URL(
+        seoImage.startsWith('/') ? seoImage : `/${seoImage}`,
+        siteUrl
+    ).toString();
+}
+// If no SEO image is specified, but we have a featured image, use its URL
+else if (!seoImage && project.data.featuredImage) {
+    // For Astro image objects, we need to create an absolute URL
+    const siteUrl = import.meta.env.SITE || 'https://titan-core.vercel.app';
+    seoImage = new URL(project.data.featuredImage.src, siteUrl).toString();
+}
+---
+
+<Layout title={seoTitle} description={seoDescription} image={seoImage}>
+    <div
+        class="w-full h-120 absolute top-0 left-0 z-0 overflow-hidden border-b border-black"
+    >
+        {
+            project.data.featuredImage && (
+                <>
+                    <Image
+                        src={project.data.featuredImage}
+                        alt=""
+                        width={1920}
+                        height={1080}
+                        class="w-full h-full object-cover grayscale opacity-20"
+                        quality={60}
+                    />
+                    <div class="absolute inset-0 bg-primary/10 backdrop-blur-md" />
+                </>
+            )
+        }
+    </div>
+
+    <article
+        class="site-container--small mx-auto px-4 prose relative z-10 pb-base"
+    >
+        <div class="mt-42 mb-12 text-center">
+            <h1>{project.data.title}</h1>
+            <div class="flex items-center justify-center gap-4 text-gray-600">
+                {project.data.publishDate && <Date date={project.data.publishDate} />}
+                {
+                    project.data.categories && (
+                        <div class="flex flex-wrap gap-2">
+                            {project.data.categories.map(category => (
+                                <CategoryPill category={category} />
+                            ))}
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+
+        {
+            project.data.featuredImage && (
+                <Image
+                    src={project.data.featuredImage}
+                    alt=""
+                    width={1200}
+                    height={675}
+                    class="w-full h-auto rounded-lg border mb-12 border-black"
+                    quality={80}
+                    format="webp"
+                />
+            )
+        }
+
+        <div class="mt-8">
+            <Content />
+        </div>
+    </article>
+</Layout>

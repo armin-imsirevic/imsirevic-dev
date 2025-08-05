@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import { blogSetting } from '../../data/config';
+// If you have a PaginatedUslugeLayout, use it. Otherwise, use PaginatedProjektLayout or create a new layout for services.
+import PaginatedUslugeLayout from '../../components/usluge/PaginatedUslugeLayout.astro';
+export const prerender = true;
+
+// Get static paths for all possible pages
+export async function getStaticPaths() {
+    const allServices = await getCollection('usluge');
+
+    // Filter services
+    const filteredServices = allServices.filter(service => {
+        return import.meta.env.DEV || service.data.publish !== false;
+    });
+
+    // Sort services by date
+    const sortedServices = filteredServices.sort(
+        (a, b) => {
+            const aDate = a.data.publishDate?.getTime() || 0;
+            const bDate = b.data.publishDate?.getTime() || 0;
+            return bDate - aDate;
+        }
+    );
+
+    const totalServices = sortedServices.length;
+    const totalPages = Math.ceil(totalServices / blogSetting.postsPerPage);
+
+    // Create paths for all pages except page 1 (which is handled by index.astro)
+    return Array.from({ length: totalPages - 1 }, (_, i) => {
+        const page = i + 2; // Start from page 2
+        const start = (page - 1) * blogSetting.postsPerPage;
+        const end = start + blogSetting.postsPerPage;
+
+        return {
+            params: { page: String(page) },
+            props: {
+                page,
+                totalPages,
+                services: sortedServices.slice(start, end),
+            },
+        };
+    });
+}
+
+const { page, totalPages, services } = Astro.props;
+
+// Redirect page 1 to the main services page
+if (page === 1) {
+    return Astro.redirect('/usluge');
+}
+---
+
+<PaginatedUslugeLayout
+    usluge={services}
+    currentPage={page}
+    totalPages={totalPages}
+    baseUrl="/usluge/"  
+    title="Naše Usluge"
+    subtitle="Pogledajte naše usluge i pronađite rešenje za vaš prostor"
+/>

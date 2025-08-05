@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjektList from './ProjektList.astro';
+import InnerHero from '../sections/InnerHero.astro';
+import Button from '../ui/Button.astro';
+import { ChevronLeft, ChevronRight } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+import projektHeroImage from '@assets/images/microcement-room.png';
+
+const seoTitle = 'Projekti';
+const seoDescription =
+    'Pogledajte naše realizovane projekte mikrocementa, epoksidnih podova i drugih dekorativnih rješenja.';
+
+interface Props {
+    projekti: CollectionEntry<'projekti'>[];
+    currentPage: number;
+    totalPages: number;
+    baseUrl: string; // e.g., '/projekti' or '/projekti/category/some-category'
+    title: string;
+    subtitle: string;
+    currentCategory?: string;
+    searchQuery?: string;
+}
+
+const {
+    projekti: paginatedProjekti,
+    currentPage,
+    totalPages,
+    baseUrl,
+    title,
+    subtitle,
+    currentCategory,
+    searchQuery,
+} = Astro.props;
+
+// Ensure totalPages is always a number
+const safeTotalPages = typeof totalPages === 'number' && totalPages > 0 ? totalPages : 1;
+
+// Generate pagination URLs
+const buildPaginationUrl = (page: number) => {
+    const queryParams = [];
+    if (currentCategory && currentCategory !== 'sve') {
+        queryParams.push(`category=${currentCategory}`);
+    }
+    if (searchQuery) {
+        queryParams.push(`search=${encodeURIComponent(searchQuery)}`);
+    }
+    
+    const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+    
+    if (page === 1) {
+        return `${baseUrl}${queryString}`;
+    }
+    return `${baseUrl}/${page}${queryString}`;
+};
+
+const nextPage = currentPage < safeTotalPages ? buildPaginationUrl(currentPage + 1) : null;
+const prevPage = currentPage > 1 ? buildPaginationUrl(currentPage - 1) : null;
+
+const heroContent = {
+    title: title,
+    description: subtitle,
+    backgroundImage: projektHeroImage,
+    overlayOpacity: 0.6,
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <main>
+        <InnerHero content={heroContent} />
+        <ProjektList projekti={paginatedProjekti} {currentCategory} {searchQuery} />
+
+        {
+            safeTotalPages > 1 && (
+                <nav
+                    class="pagination-nav"
+                    aria-label="Projects pagination"
+                    data-aos="fade-in"
+                >
+                    <div class="container mx-auto px-4 py-12">
+                        <div class="flex items-center justify-center gap-6">
+                            {prevPage && (
+                                <Button
+                                    href={prevPage}
+                                    variant="primary"
+                                    class="flex items-center gap-2"
+                                >
+                                    <ChevronLeft size={20} />
+                                    Previous
+                                </Button>
+                            )}
+
+                            <div class="flex items-center gap-2">
+                                {Array.from(
+                                    { length: safeTotalPages },
+                                    (_, i) => i + 1
+                                ).map(pageNum => (
+                                    <a
+                                        href={buildPaginationUrl(pageNum)}
+                                        class={`w-10 h-10 flex items-center justify-center rounded-full transition-colors ${
+                                            currentPage === pageNum
+                                                ? 'bg-primary text-white'
+                                                : 'hover:bg-white hover:text-body-base'
+                                        }`}
+                                        aria-current={
+                                            currentPage === pageNum
+                                                ? 'page'
+                                                : undefined
+                                        }
+                                    >
+                                        {pageNum}
+                                    </a>
+                                ))}
+                            </div>
+
+                            {nextPage && (
+                                <Button href={nextPage} variant="primary">
+                                    Next
+                                    <ChevronRight size={20} />
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </nav>
+            )
+        }
+    </main>
+</Layout>

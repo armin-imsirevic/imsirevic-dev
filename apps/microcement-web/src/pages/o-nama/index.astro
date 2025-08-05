@@ -1,0 +1,42 @@
+---
+import Layout from '@layouts/Layout.astro';
+import InnerHero from '@components/sections/InnerHero.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
+import logoImage from '../../assets/images/home/logo.png';
+
+const seoTitle = 'O nama - Microcement Web';
+const seoDescription = 'Saznajte više o našem timu, iskustvu i vrijednostima.';
+
+const heroContent = {
+    title: 'O nama',
+    description: 'Upoznajte naš tim, našu priču i vrijednosti koje nas vode.',
+};
+
+const teamSection = {
+    eyebrow: 'NAŠ TEAM',
+    headline: 'Tko smo mi?',
+    description:
+        "Naš tim stručnjaka posvećen je ostvarivanju vaših snova o savršenom prostoru. Kombiniramo napredne sustave, precizan pristup i kreativnost kako bismo stvorili prostor koji odražava vašu viziju i potrebe.",
+    image: {
+        src: logoImage,
+        alt: 'nas tim',
+    },
+    buttons: [
+        {
+            text: 'Pročitajte više',
+            link: '/style-guide',
+            variant: 'primary' as const,
+        },
+    ],
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent} />
+    <SplitPanel
+        content={teamSection}
+        imagePosition="left"
+        background="base"
+        padding="small"
+    />
+</Layout>

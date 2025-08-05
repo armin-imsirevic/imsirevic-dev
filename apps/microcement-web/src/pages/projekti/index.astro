@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import { blogSetting } from '../../data/config';
+import PaginatedProjektLayout from '../../components/projekti/PaginatedProjektLayout.astro';
+
+// Enable server-side rendering for this page
+export const prerender = false;
+
+// Get search params from URL - this works in SSR mode
+const url = new URL(Astro.request.url);
+const currentPage = parseInt(url.searchParams.get('page') || '1');
+const searchQuery = url.searchParams.get('search') || '';
+
+// Get all projects without any filtering
+const allProjects = await getCollection('projekti');
+
+// Filter out unpublished projects
+let filteredProjects = allProjects.filter(project => {
+    return import.meta.env.DEV || project.data.publish !== false;
+});
+
+// Apply search filter if search query exists
+if (searchQuery) {
+    filteredProjects = filteredProjects.filter(project => {
+        const searchLower = searchQuery.toLowerCase();
+        const titleMatch = project.data.title.toLowerCase().includes(searchLower);
+        const excerptMatch = project.data.excerpt.toLowerCase().includes(searchLower);
+        const categoryMatch = project.data.categories?.some(category => 
+            category.toLowerCase().includes(searchLower)
+        ) || false;
+        
+        return titleMatch || excerptMatch || categoryMatch;
+    });
+}
+
+// Calculate pagination
+const totalProjects = filteredProjects.length;
+const totalPages = Math.ceil(totalProjects / blogSetting.postsPerPage);
+const start = (currentPage - 1) * blogSetting.postsPerPage;
+const end = start + blogSetting.postsPerPage;
+const paginatedProjects = filteredProjects.slice(start, end);
+
+// Dynamic title and subtitle based on search
+const title = searchQuery ? `Search Results for "${searchQuery}"` : 'Naši Projekti';
+const subtitle = searchQuery 
+    ? `Found ${totalProjects} projects matching "${searchQuery}"`
+    : 'Pogledajte naše realizovane projekte i pronađite inspiraciju za vaš prostor';
+---
+
+<PaginatedProjektLayout
+    projekti={paginatedProjects}
+    {currentPage}
+    {totalPages}
+    baseUrl="/projekti"
+    {title}
+    {subtitle}
+    {searchQuery}
+/>
+

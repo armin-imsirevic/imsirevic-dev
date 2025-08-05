@@ -1,0 +1,238 @@
+---
+import { Icon } from "astro-icon/components";
+import RowEntry from "../components/RowEntry.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import SocialIcon from "../components/SocialIcon.astro";
+import Title from "../components/Title.astro";
+import "../styles/global.css";
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>CV</title>
+    </head>
+    <body class="dark:bg-black">
+        <button id="dark-mode-toggle" class="mt-2 mb-2">
+            <Icon name="tabler:sun" class="h-6 w-6 dark:text-white" />
+        </button>
+
+        <Title
+            address="Paška Ulica 12A"
+            city="Zagreb"
+            country="Croatia"
+            name="Armin Imširević"
+            phone="+385 99 4744 841"
+            email="armin.imsirevic@outlook.com"
+        />
+        
+        <div id="employment" class="mb-3">
+            <SectionTitle title="EMPLOYMENT" />
+            <RowEntry
+                companyName="Infobip"
+                title="Senior Full Stack Software Engineer"
+                timeSpan={{ start: "Feb. 2023", end: "Present" }}
+                location="Zagreb, Croatia"
+                typeOfEmployment="Hybrid"
+                descriptionList={[
+                    "Set technical direction and lead the delivery of complex, enterprise-grade solutions across the stack, utilizing .NET, React.js, Node.js, Java, and Kotlin.",
+                    "Design and evolve system architecture, implement critical features, and ensure applications are scalable and robust.",
+                    "Mentor and support junior developers, fostering knowledge sharing and promoting adoption of best practices in code quality, automation, and software design.",
+                    "Collaborate with cross-functional stakeholders to guide projects from conception to release.",
+                    "Drive continuous improvement and ensure platforms adapt to changing business needs.",
+                ]}
+            />
+            <RowEntry
+                companyName="Infobip"
+                title="Full Stack Software Engineer"
+                timeSpan={{ start: "Jun. 2020", end: "Feb. 2023" }}
+                location="Zagreb, Croatia"
+                typeOfEmployment="Remote"
+                descriptionList={[
+                    "Designed, developed, and maintained robust communication solutions using React.js, Node.js, Java, Kotlin, C#, and .NET Framework.",
+                    "Implemented new features and optimized system performance to ensure scalability and reliability.",
+                    "Integrated diverse internal and external services to enhance platform capabilities.",
+                    "Collaborated with product, QA, and DevOps teams for seamless deployments and efficient application functionality.",
+                    "Delivered solutions tailored to evolving business and customer needs.",
+                ]}
+            />
+            <RowEntry
+                companyName="Oradian"
+                title="Full Stack Software Engineer"
+                timeSpan={{ start: "Sep. 2018", end: "Jun. 2020" }}
+                typeOfEmployment="Remote"
+                location="Zagreb, Croatia"
+                descriptionList={[
+                    "Developed front-end features for the banking platform using React.js and integrated them with backend service implemented in Scala.",
+                    "Collaborated with UX and product teams to deliver intuitive user interfaces and enhance overall platform usability.",
+                    "Worked with backend engineers to develop new functionalities and address changing business and customer requirements.",
+                ]}
+            />
+            <RowEntry
+                companyName="Oradian"
+                title="Backend Software Engineer"
+                timeSpan={{ start: "Jan. 2017", end: "Jun. 2020" }}
+                typeOfEmployment="Remote"
+                location="Zagreb, Croatia"
+                descriptionList={[
+                    "Developed and maintained the core banking backend, primarily using Scala.",
+                    "Improved system performance and reliability by optimizing data processing workflows and refining backend services.",
+                    "Collaborated closely with senior engineers to solve complex technical challenges in scalable and resilient financial systems.",
+                    "Strengthened problem-solving skills and deepened expertise in building robust, high-availability financial applications.",
+                ]}
+            />
+            <RowEntry
+                companyName="Oradian"
+                title="QA Engineer (Intern)"
+                timeSpan={{ start: "Jun. 2016", end: "Jan. 2017" }}
+                typeOfEmployment="Onsite"
+                location="Zagreb, Croatia"
+                descriptionList={[
+                    "Designed and executed manual and automated end-to-end tests for the company’s cloud-based banking platform using Selenium.",
+                    "Strengthened test coverage and improved overall product reliability through automation.",
+                    "Collaborated with developers to identify, track, and prioritize defects, resulting in a noticeable reduction in production bugs.",
+                    "Worked within an Agile team focused on continuous improvement and high quality standards.",
+                ]}
+            />
+        </div>
+
+        <div id="education" class="mb-6">
+            <SectionTitle title="Education" />
+            <RowEntry
+                companyName="RIT Croatia"
+                location="Zagreb, Croatia"
+                descriptionList={[
+                    "Bachelor’s Degree, Information Technology"
+                ]}
+            />
+        </div>
+
+        <div id="skills" class="mb-6">
+            <SectionTitle title="Skills" />
+            <ul class="mt-1 list-disc pl-6 text-xs dark:text-white">
+                <li>
+                    <span class="font-bold">Frontend:</span> React.js, TypeScript, JavaScript, HTML/CSS
+                </li>
+                <li>
+                    <span class="font-bold">Backend:</span> Node.js, Java, Kotlin, C#, .NET, SQL, MongoDB
+                </li>
+                <li>
+                    <span class="font-bold">Cloud & DevOps:</span> Docker, Kubernetes, CI/CD, Git, Jenkins, Postman
+                </li>
+                <li>
+                    <span class="font-bold">Tools:</span> Visual Studio Code, IntelliJ IDEA, JIRA, Confluence
+                </li>
+                <li>
+                    <span class="font-bold">Practices:</span> Agile, Scrum, TDD, CI/CD, System Design, Code Review, Mentoring
+                </li>
+                <li>
+                    <span class="font-bold">Languages:</span> English (fluent), Croatian (native)
+                </li>
+            </ul>
+        </div>
+
+        <div id="social" class="mb-2 flex flex-row justify-center">
+            <div class="mr-4">
+                <SocialIcon
+                    icon="fa-brands:github"
+                    label="github"
+                    url="https://www.github.com/"
+                />
+            </div>
+            <div class="mr-4">
+                <SocialIcon
+                    icon="fa-brands:linkedin"
+                    label="linkedin"
+                    url="https://www.linkedin.com/"
+                />
+            </div>
+            <div class="mr-4">
+                <SocialIcon
+                    icon="fa-brands:medium"
+                    label="medium"
+                    url="https://www.medium.com/"
+                />
+            </div>
+            <div class="mr-4">
+                <SocialIcon
+                    icon="fa-brands:dev"
+                    label="dev"
+                    url="https://www.dev.to/"
+                />
+            </div>
+            <div class="mr-4">
+                <SocialIcon
+                    icon="fa-brands:stack-overflow"
+                    label="stack-overflow"
+                    url="#"
+                />
+            </div>
+            <div>
+                <SocialIcon
+                    icon="ant-design:global-outlined"
+                    label="website"
+                    url="https://www.stackoverflow.com/"
+                />
+            </div>
+        </div>
+        <script is:inline>
+            if (
+                localStorage.theme === "dark" ||
+                (!("theme" in localStorage) &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+
+            window.onload = function () {
+                const element = document.getElementById("dark-mode-toggle");
+
+                if (element) {
+                    element.addEventListener("click", () => {
+                        document.documentElement.classList.toggle("dark");
+
+                        localStorage.theme =
+                            document.documentElement.classList.contains("dark")
+                                ? "dark"
+                                : "light";
+                    });
+                }
+            };
+
+            const breakpoints = {
+                sm: 640,
+                md: 768,
+                lg: 1024,
+                xl: 1280,
+                '2xl': 1536
+            };
+
+            function getTailwindBreakpoint() {
+                const width = window.innerWidth;
+                if (width >= breakpoints['2xl']) return '2xl';
+                if (width >= breakpoints.xl) return 'xl';
+                if (width >= breakpoints.lg) return 'lg';
+                if (width >= breakpoints.md) return 'md';
+                if (width >= breakpoints.sm) return 'sm';
+                return 'xs';
+            }
+
+            function logBreakpoint() {
+                console.log('Current Tailwind breakpoint:', getTailwindBreakpoint());
+                window.breakpoint = getTailwindBreakpoint();
+            }
+
+            // Log on load
+            logBreakpoint();
+
+            // Log on resize
+            window.addEventListener('resize', logBreakpoint);
+
+        </script>
+    </body>
+</html>

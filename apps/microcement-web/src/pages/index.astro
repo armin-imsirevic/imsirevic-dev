@@ -1,0 +1,224 @@
+---
+import Layout from '@layouts/Layout.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
+import { featureLists } from '@data/features';
+import { statsLists } from '@data/stats';
+import { logoLists } from '@data/logos';
+import { faqLists } from '@data/faqs';
+import RecentPosts from '@components/sections/RecentPosts.astro';
+import microcementImage from '../assets/images/microcement-room.png';
+import hallwayImage from '../assets/images/hallway-microcement.png';
+import logoImage from '../assets/images/home/logo.png';
+import workerImage from '../assets/images/home/worker.png';
+import GalleryHero from '@components/sections/GalleryHero.astro';
+import NaseUsluge from '@components/sections/NaseUsluge.astro';
+import ContactInfo from '@components/sections/ContactInfo.astro';
+
+const seoTitle = 'Modern, High-Performance Astro Theme';
+const seoDescription =
+    'A modern, high-performance Astro theme for developer portfolios and documentation sites.';
+
+const galleryHeroSlides = [
+    {
+        title: 'Nova dimenzija prostora',
+        description:
+            'Stvaramo iskustvo kroz moderne materijale i preciznu izvedbu. Kombiniramo estetiku i funkcionalnost prema vašim željama.',
+        buttons: [
+            {
+                text: 'Besplatne konzultacije',
+                link: '/kontakt',
+                target: '_self',
+            },
+            {
+                text: 'Pogledajte projekte',
+                link: '/projekti',
+                target: '_self',
+            },
+        ],
+        backgroundImage: microcementImage,
+        overlayOpacity: 0.6,
+    },
+    {
+        title: 'Inspiracija u svakom detalju',
+        description:
+            'Pristupite uređenju interijera s dozom inovacije i estetske profinjenosti. Vaš prostor, vaša pravila – mi nudimo mogućnosti.',
+        buttons: [
+            {
+                text: 'Započnite svoj projekt',
+                link: '/kontakt',
+                target: '_self',
+            },
+            {
+                text: 'Saznajte više',
+                link: '/projekti',
+                target: '_self',
+            },
+        ],
+        backgroundImage: hallwayImage,
+        overlayOpacity: 0.3,
+    },
+];
+
+const featuresSection = {
+    eyebrow: 'CORE FEATURES',
+    title: "Everything You Need, Nothing You Don't",
+    description:
+        'Titan Core gives you a solid foundation with essential features while staying lightweight and customizable. Start with a clean slate and build exactly what you need without the bloat.',
+    features: featureLists.main.features,
+    button: {
+        text: 'View Theme Info',
+        link: '/theme-info',
+        variant: 'primary' as const,
+    },
+};
+
+// const FooterCta = {
+//     eyebrow: 'Join The Community',
+//     title: ' Start Building With Titan Core Today',
+//     description:
+//         "Titan Core is open-source and constantly improving. Join our community of developers to contribute, get support, or showcase what you've built.",
+//     hideCta: false,
+//     button: {
+//         text: 'Download Titan Core',
+//         link: 'https://github.com/rspisarski/titan-core',
+//         target: '_blank',
+//     },
+// };
+
+const teamSection = {
+    eyebrow: 'NAŠ TEAM',
+    headline: 'Tko smo mi?',
+    description:
+        "Naš tim stručnjaka posvećen je ostvarivanju vaših snova o savršenom prostoru. Kombiniramo napredne sustave, precizan pristup i kreativnost kako bismo stvorili prostor koji odražava vašu viziju i potrebe.",
+    image: {
+        src: logoImage,
+        alt: 'nas tim',
+    },
+    buttons: [
+        {
+            text: 'Pročitajte više',
+            link: '/style-guide',
+            variant: 'primary' as const,
+        },
+    ],
+};
+
+const savjetiSection = {
+    eyebrow: 'KONTAKTIRAJTE NAS',
+    headline: 'Nudimo savjete i podršku',
+    description:
+        "Ako vam je situacija nejasna ili niste sigurni što odabrati, nemojte brinuti. Nudimo besplatne konzultacije kako bismo vam pomogli donijeti najbolju odluku za vaš prostor s kreativnošću i kvalitetom koji zaslužujete.",
+    image: {
+        src: workerImage,
+        alt: 'savjeti',
+    },
+    buttons: [
+        {
+            text: 'Kliknite ovdje za više informacija',
+            link: '/style-guide',
+            variant: 'secondary' as const,
+        },
+    ],
+};
+
+
+const sideBySideStats = {
+    eyebrow: 'Stats',
+    title: 'Built for Speed and Flexibility',
+    description:
+        'Titan Core is designed with performance and developer experience in mind. Our lightweight theme gives you all the essentials without the bloat, letting you build exactly what you need with impressive speed.',
+    variant: 'side-by-side' as const,
+    stats: statsLists.withContent.stats,
+    content: {
+        title: 'Built for Speed and Flexibility',
+        description:
+            'Titan Core is designed with performance and developer experience in mind. Our lightweight theme gives you all the essentials without the bloat, letting you build exactly what you need with impressive speed.',
+        button: {
+            text: 'Discover Titan Core',
+            link: '/theme-info',
+            variant: 'primary' as const,
+        },
+    },
+};
+
+const mainCta = {
+    eyebrow: 'Build Blocks',
+    title: 'Ready-to-Use Components',
+    description:
+        'Save development time with our pre-built, accessible components. Each one is designed to integrate seamlessly with your projects while maintaining excellent performance.',
+    button: {
+        text: 'View All Components',
+        link: '/components',
+        variant: 'primary' as const,
+        target: '_self' as const,
+    },
+};
+
+const logosSection = {
+    eyebrow: 'Our Clients',
+    logos: logoLists.main.logos,
+};
+
+const faqsSection = {
+    eyebrow: 'FAQs',
+    title: 'Frequently Asked Questions',
+    description:
+        'Find answers to common questions about our platform and services.',
+    faqs: faqLists.main.faqs,
+};
+
+const uslugeSection = {
+    title: ' Naše Usluge',
+    description:
+        'Svaki projekt, isti standardi – beskompromisna preciznost, kvaliteta, ekonomičnost i sigurnost. Očekujte izvrsnost uz jamstvo.',
+};
+
+const projektiSection = {
+    title: 'Naši Projekti',
+    description:
+        'Pogledajte naše realizovane projekte i pronađite inspiraciju za vaš prostor. Svaki projekt predstavlja priču o transformaciji i pažljivo planiranoj estetici.',
+    button: {
+        text: 'Pogledajte sve projekte',
+        link: '/projekti',
+        variant: 'primary' as const,
+    },
+};
+
+const contactSection = {
+    title: 'Kontaktirajte nas',
+    description: 'Radimo od ponedjeljka do subote. Možete nas kontaktirati za besplatne konzultacije putem e-maila, telefona ili nas posjetiti na našoj adresi.',
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <GalleryHero slides={galleryHeroSlides} />
+    <NaseUsluge
+        content={uslugeSection}
+        background="base"
+        padding="small"
+    />
+    <RecentPosts
+        content={projektiSection}
+        background="light"
+        padding="small"
+        postsToShow={3}
+        category="Projekti"
+    />
+    <SplitPanel
+        content={teamSection}
+        imagePosition="left"
+        background="base"
+        padding="small"
+    />
+    <SplitPanel
+        content={savjetiSection}
+        imagePosition="right"
+        background="light"
+        padding="small"
+    />
+    <ContactInfo 
+        content={contactSection}
+        background="light" 
+        padding="base" 
+    />
+</Layout>

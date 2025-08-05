@@ -1,0 +1,4 @@
+{
+    "chat.agent.maxRequests": 1000,
+    "chat.tools.autoApprove": true,
+}

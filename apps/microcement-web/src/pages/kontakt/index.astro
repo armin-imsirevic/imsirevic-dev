@@ -1,0 +1,28 @@
+---
+
+import Layout from '@layouts/Layout.astro';
+import ContactInfo from '@components/sections/ContactInfo.astro';
+import InnerHero from '@components/sections/InnerHero.astro';
+
+const seoTitle = 'Modern, High-Performance Astro Theme';
+const seoDescription =
+    'A modern, high-performance Astro theme for developer portfolios and documentation sites.';
+
+const contactSection = {
+    title: 'Kontaktirajte nas',
+    description: 'Radimo od ponedjeljka do subote. Možete nas kontaktirati za besplatne konzultacije putem e-maila, telefona ili nas posjetiti na našoj adresi.',
+};
+const heroContent = {
+    title: 'Kontakt',
+    description: 'Stupite u kontakt s našim timom za sva pitanja, savjete ili suradnju.',
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent} />
+    <ContactInfo 
+        content={contactSection}
+        background="light" 
+        padding="base" 
+    />
+</Layout>

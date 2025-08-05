@@ -1,0 +1,14 @@
+---
+import Date from '../ui/Date.astro';
+
+interface Props {
+  publishDate?: Date;
+}
+
+const { publishDate } = Astro.props;
+---
+{publishDate && (
+  <div class="text-sm text-gray-600 mb-3 group-hover:text-primary/80 transition-colors duration-300">
+    <Date date={publishDate} />
+  </div>
+)}

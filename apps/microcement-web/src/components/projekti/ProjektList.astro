@@ -1,0 +1,376 @@
+---
+import ProjektPost from './ProjektPost.astro';
+import type { CollectionEntry } from 'astro:content';
+import { categories } from '../../data/categories';
+import { getCollection } from 'astro:content';
+
+interface Props {
+    projekti: CollectionEntry<'projekti'>[];
+    currentCategory?: string;
+    searchQuery?: string;
+}
+
+const { projekti, currentCategory, searchQuery } = Astro.props;
+
+// Get all projekti to determine active categories
+const allProjekti = await getCollection('projekti', ({ data }) => {
+    return import.meta.env.DEV || data.publish !== false;
+});
+
+// Count category usage frequency
+const categoryCount = new Map<string, number>();
+allProjekti.forEach(projekt => {
+    projekt.data.categories?.forEach(categoryName => {
+        categoryCount.set(categoryName, (categoryCount.get(categoryName) || 0) + 1);
+    });
+});
+
+// Filter to only show categories that have projekti and get top 5 most used
+const activeCategories = categories
+    .filter(category => allProjekti.some(projekt => projekt.data.categories?.includes(category.name)))
+    .sort((a, b) => (categoryCount.get(b.name) || 0) - (categoryCount.get(a.name) || 0))
+    .slice(0, 5);
+---
+
+<section class="site-container mx-auto px-4 py-base">
+    <div
+        class="mb-16 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6 relative z-1"
+        data-aos="fade-in"
+        data-aos-delay="100"
+    >
+        <div class="w-full">
+            <h2 class="text-lg font-semibold mb-4">Search Projects:</h2>
+            
+            <form method="GET" action="/projekti" class="mb-4">
+                <div class="relative max-w-lg">
+                    <div class="flex gap-3">
+                        <div class="flex-1 relative">
+                            <input
+                                type="text"
+                                name="search"
+                                id="search-input"
+                                value={searchQuery || ''}
+                                placeholder="Search projects by title, description, or category..."
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-small"
+                                autocomplete="off"
+                            />
+                            <!-- Dropdown for suggestions -->
+                            <div 
+                                id="search-dropdown" 
+                                class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-[9999] hidden max-h-60 overflow-y-auto mt-1"
+                            >
+                                <!-- Categories will be populated here -->
+                            </div>
+                        </div>
+                        <button
+                            type="submit"
+                            class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors duration-200 text-small font-medium"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            {searchQuery && (
+                <div class="mb-4">
+                    <span class="text-small text-gray-600">Searching for: </span>
+                    <span class="font-semibold text-primary">"{searchQuery}"</span>
+                    <a 
+                        href="/projekti" 
+                        class="ml-2 text-small text-primary hover:underline"
+                    >
+                        Clear search
+                    </a>
+                </div>
+            )}
+        </div>
+        <p
+            class="text-small text-body-base text-left sm:text-right whitespace-nowrap"
+        >
+            Showing <span class="font-bold text-primary">{projekti.length}</span> of
+            <span class="font-bold text-primary">{allProjekti.length}</span> projects
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+            projekti.map((projekt, index) => (
+                <ProjektPost
+                    title={projekt.data.title}
+                    excerpt={projekt.data.excerpt}
+                    featuredImage={projekt.data.featuredImage}
+                    publishDate={projekt.data.publishDate || undefined}
+                    categories={projekt.data.categories || []}
+                    slug={projekt.id}
+                    index={index}
+                />
+            ))
+        }
+    </div>
+
+    {
+        projekti.length === 0 && (
+            <p class="text-center text-gray-500 py-8">
+                {searchQuery 
+                    ? `No projects found matching "${searchQuery}". Try a different search term.`
+                    : "No projects found in this category."
+                }
+            </p>
+        )
+    }
+</section>
+
+<script define:vars={{ categories: activeCategories, allProjekti, searchQuery }}>
+    // Search dropdown functionality
+    class SearchDropdown {
+        constructor() {
+            this.searchInput = document.getElementById('search-input');
+            this.dropdown = document.getElementById('search-dropdown');
+            this.categories = categories;
+            this.allProjects = allProjekti;
+            this.currentQuery = searchQuery || '';
+            
+            this.init();
+        }
+        
+        init() {
+            if (!this.searchInput || !this.dropdown) return;
+            
+            // Event listeners
+            this.searchInput.addEventListener('input', (e) => this.handleInput(e));
+            this.searchInput.addEventListener('focus', (e) => this.handleFocus(e));
+            this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!this.searchInput.contains(e.target) && !this.dropdown.contains(e.target)) {
+                    this.hideDropdown();
+                }
+            });
+        }
+        
+        handleInput(e) {
+            const query = e.target.value.trim();
+            
+            if (query.length >= 2) {
+                this.showSuggestions(query);
+            } else {
+                this.hideDropdown();
+            }
+        }
+        
+        handleFocus(e) {
+            const query = e.target.value.trim();
+            if (query.length >= 2) {
+                this.showSuggestions(query);
+            }
+        }
+        
+        handleKeydown(e) {
+            const items = this.dropdown.querySelectorAll('.suggestion-item');
+            const activeItem = this.dropdown.querySelector('.suggestion-item.active');
+            
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (activeItem) {
+                        activeItem.classList.remove('active');
+                        const next = activeItem.nextElementSibling;
+                        if (next) {
+                            next.classList.add('active');
+                        } else {
+                            items[0]?.classList.add('active');
+                        }
+                    } else {
+                        items[0]?.classList.add('active');
+                    }
+                    break;
+                    
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (activeItem) {
+                        activeItem.classList.remove('active');
+                        const prev = activeItem.previousElementSibling;
+                        if (prev) {
+                            prev.classList.add('active');
+                        } else {
+                            items[items.length - 1]?.classList.add('active');
+                        }
+                    } else {
+                        items[items.length - 1]?.classList.add('active');
+                    }
+                    break;
+                    
+                case 'Enter':
+                    if (activeItem) {
+                        e.preventDefault();
+                        activeItem.click();
+                    }
+                    break;
+                    
+                case 'Escape':
+                    this.hideDropdown();
+                    this.searchInput.blur();
+                    break;
+            }
+        }
+        
+        showSuggestions(query) {
+            const suggestions = this.getSuggestions(query);
+            console.log('Query:', query, 'Suggestions:', suggestions); // Debug
+            
+            if (suggestions.length > 0) {
+                this.renderSuggestions(suggestions);
+                this.showDropdown();
+            } else {
+                this.hideDropdown();
+            }
+        }
+        
+        getSuggestions(query) {
+            const queryLower = query.toLowerCase();
+            const suggestions = [];
+            
+            // Get matching categories (limit to 5)
+            const matchingCategories = this.categories
+                .filter(category => 
+                    category.name.toLowerCase().includes(queryLower) ||
+                    category.description?.toLowerCase().includes(queryLower)
+                )
+                .slice(0, 5);
+            
+            // Get matching project titles (limit to 3)
+            const matchingProjects = this.allProjects
+                .filter(project => 
+                    project.data.title.toLowerCase().includes(queryLower) ||
+                    project.data.excerpt.toLowerCase().includes(queryLower)
+                )
+                .slice(0, 3);
+            
+            // Add category suggestions
+            matchingCategories.forEach(category => {
+                suggestions.push({
+                    type: 'category',
+                    text: category.name,
+                    description: category.description || '',
+                    action: () => this.searchByCategory(category.name)
+                });
+            });
+            
+            // Add project suggestions
+            matchingProjects.forEach(project => {
+                suggestions.push({
+                    type: 'project',
+                    text: project.data.title,
+                    description: project.data.excerpt,
+                    action: () => this.searchByText(project.data.title)
+                });
+            });
+            
+            return suggestions.slice(0, 5); // Overall limit of 5 suggestions
+        }
+        
+        renderSuggestions(suggestions) {
+            const html = suggestions.map((suggestion, index) => {
+                const icon = suggestion.type === 'category' ? '🏷️' : '📄';
+                const typeLabel = suggestion.type === 'category' ? 'Category' : 'Project';
+                
+                return `
+                    <div class="suggestion-item px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
+                         data-index="${index}">
+                        <div class="flex items-start gap-3">
+                            <span class="text-lg">${icon}</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-900">${this.escapeHtml(suggestion.text)}</span>
+                                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">${typeLabel}</span>
+                                </div>
+                                ${suggestion.description ? 
+            `<p class="text-sm text-gray-600 mt-1 truncate">${this.escapeHtml(suggestion.description)}</p>` 
+            : ''
+    }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            this.dropdown.innerHTML = html;
+            
+            // Add click event listeners
+            this.dropdown.querySelectorAll('.suggestion-item').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    suggestions[index].action();
+                });
+                
+                item.addEventListener('mouseenter', () => {
+                    this.dropdown.querySelectorAll('.suggestion-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+        }
+        
+        searchByCategory(categoryName) {
+            window.location.href = `/projekti?search=${encodeURIComponent(categoryName)}`;
+        }
+        
+        searchByText(text) {
+            this.searchInput.value = text;
+            this.hideDropdown();
+            // Optionally auto-submit the form
+            this.searchInput.closest('form').submit();
+        }
+        
+        showDropdown() {
+            console.log('Showing dropdown'); // Debug
+            this.dropdown.classList.remove('hidden');
+            console.log('Dropdown classes:', this.dropdown.className); // Debug
+        }
+        
+        hideDropdown() {
+            console.log('Hiding dropdown'); // Debug
+            this.dropdown.classList.add('hidden');
+            this.dropdown.querySelectorAll('.suggestion-item').forEach(el => el.classList.remove('active'));
+        }
+        
+        escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new SearchDropdown();
+    });
+</script>
+
+<style>
+    #search-dropdown {
+        position: absolute !important;
+        z-index: 9999 !important;
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    .suggestion-item.active {
+        background-color: #f3f4f6 !important;
+    }
+    
+    .suggestion-item:hover {
+        background-color: #f9fafb !important;
+    }
+    
+    .suggestion-item.active:hover {
+        background-color: #f3f4f6 !important;
+    }
+    
+    /* Ensure the relative container doesn't clip the dropdown */
+    .relative {
+        position: relative;
+        z-index: 1;
+    }
+</style>

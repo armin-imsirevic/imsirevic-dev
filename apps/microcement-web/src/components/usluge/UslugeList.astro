@@ -1,0 +1,122 @@
+---
+import UslugaPost from './UslugaPost.astro';
+import type { CollectionEntry } from 'astro:content';
+import { categories } from '../../data/categories';
+import { getCollection } from 'astro:content';
+
+interface Props {
+    usluge: CollectionEntry<'usluge'>[];
+    currentCategory?: string;
+    searchQuery?: string;
+}
+
+const { usluge, currentCategory, searchQuery } = Astro.props;
+
+// Get all usluge to determine active categories
+const allUsluge = await getCollection('usluge', ({ data }) => {
+    return import.meta.env.DEV || data.publish !== false;
+});
+
+// Count category usage frequency
+const categoryCount = new Map<string, number>();
+allUsluge.forEach(usluga => {
+    usluga.data.categories?.forEach(categoryName => {
+        categoryCount.set(categoryName, (categoryCount.get(categoryName) || 0) + 1);
+    });
+});
+
+// Filter to only show categories that have usluge and get top 5 most used
+const activeCategories = categories
+    .filter(category => allUsluge.some(usluga => usluga.data.categories?.includes(category.name)))
+    .sort((a, b) => (categoryCount.get(b.name) || 0) - (categoryCount.get(a.name) || 0))
+    .slice(0, 5);
+---
+
+<section class="site-container mx-auto px-4 py-base">
+    <div
+        class="mb-16 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6 relative z-1"
+        data-aos="fade-in"
+        data-aos-delay="100"
+    >
+        <div class="w-full">
+            <h2 class="text-lg font-semibold mb-4">Pretraga usluga:</h2>
+            
+            <form method="GET" action="/usluge" class="mb-4">
+                <div class="relative max-w-lg">
+                    <div class="flex gap-3">
+                        <div class="flex-1 relative">
+                            <input
+                                type="text"
+                                name="search"
+                                id="search-input"
+                                value={searchQuery || ''}
+                                placeholder="Pretražite usluge po nazivu, opisu ili kategoriji..."
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-small"
+                                autocomplete="off"
+                            />
+                            <!-- Dropdown for suggestions -->
+                            <div 
+                                id="search-dropdown" 
+                                class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-[9999] hidden max-h-60 overflow-y-auto mt-1"
+                            >
+                                <!-- Categories will be populated here -->
+                            </div>
+                        </div>
+                        <button
+                            type="submit"
+                            class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors duration-200 text-small font-medium"
+                        >
+                            Pretraga
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            {searchQuery && (
+                <div class="mb-4">
+                    <span class="text-small text-gray-600">Pretraga za: </span>
+                    <span class="font-semibold text-primary">"{searchQuery}"</span>
+                    <a 
+                        href="/usluge" 
+                        class="ml-2 text-small text-primary hover:underline"
+                    >
+                        Očisti pretragu
+                    </a>
+                </div>
+            )}
+        </div>
+        <p
+            class="text-small text-body-base text-left sm:text-right whitespace-nowrap"
+        >
+            Prikazano <span class="font-bold text-primary">{usluge.length}</span> od
+            <span class="font-bold text-primary">{allUsluge.length}</span> usluga
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+            usluge.map((usluga, index) => (
+                <UslugaPost
+                    title={usluga.data.title}
+                    excerpt={usluga.data.excerpt}
+                    featuredImage={usluga.data.featuredImage}
+                    publishDate={usluga.data.publishDate || undefined}
+                    categories={usluga.data.categories || []}
+                    slug={usluga.id}
+                    index={index}
+                />
+            ))
+        }
+    </div>
+
+    {
+        usluge.length === 0 && (
+            <p class="text-center text-gray-500 py-8">
+                {searchQuery 
+                    ? `Nema usluga koje odgovaraju pretrazi "${searchQuery}". Pokušajte drugi pojam.`
+                    : "Nema usluga u ovoj kategoriji."
+                }
+            </p>
+        )
+    }
+</section>

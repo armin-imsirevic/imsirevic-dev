@@ -1,0 +1,148 @@
+---
+import Button from '@components/ui/Button.astro';
+import Input from '@components/ui/form/Input.astro';
+import Textarea from '@components/ui/form/Textarea.astro';
+import Radio from '@components/ui/form/Radio.astro';
+import Checkbox from '@components/ui/form/Checkbox.astro';
+import Select from '@components/ui/form/Select.astro';
+
+const hearAboutOptions = [
+    { label: 'Internet pretraživanje', value: 'search' },
+    { label: 'Društvene mreže', value: 'social' },
+    { label: 'Preporuka prijatelja', value: 'referral' },
+    { label: 'Oglasi', value: 'ads' },
+    { label: 'Ostalo', value: 'other' },
+];
+
+const projectTypeOptions = [
+    { label: 'Microcement podovi', value: 'microcement-floors' },
+    { label: 'Decorativni zidovi', value: 'decorative-walls' },
+    { label: 'Epoksidni podovi', value: 'epoxy-floors' },
+    { label: 'Industrijski podovi', value: 'industrial-floors' },
+    { label: 'Renovacija kupatila', value: 'bathroom-renovation' },
+    { label: 'Ostalo', value: 'other' },
+];
+
+const serviceOptions = [
+    { label: 'Microcement podovi', value: 'microcement' },
+    { label: 'Decorativni zidovi', value: 'decorative-walls' },
+    { label: 'Epoksidni podovi', value: 'epoxy-floors' },
+    { label: 'Industrijski podovi', value: 'industrial-floors' },
+    { label: 'Poliuretanski premazi', value: 'polyurethane' },
+    { label: 'Konsultacije', value: 'consulting' },
+];
+
+const budgetOptions = [
+    { label: '100€ - 1.000€', value: '100-1k' },
+    { label: '1.000€ - 5.000€', value: '1-5k' },
+    { label: '5.000€ - 10.000€', value: '5-10k' },
+    { label: '10.000€ - 25.000€', value: '10-25k' },
+    { label: '25.000€ - 50.000€', value: '25-50k' },
+    { label: '50.000€+', value: '50k+' },
+];
+
+const formBackground = 'light';
+---
+
+<form 
+    name="contact" 
+    method="POST" 
+    data-netlify
+    netlify-honeypot="bot-field"
+    class="space-y-6 bg-white p-6 rounded-lg"
+>
+    <!-- Honeypot field for spam protection -->
+    <input type="hidden" name="bot-field" />
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Input
+            label="Ime i prezime"
+            id="name"
+            name="name"
+            required
+            background={formBackground}
+        />
+        <Input
+            label="Email adresa"
+            type="email"
+            id="email"
+            name="email"
+            required
+            background={formBackground}
+        />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Input
+            label="Telefon"
+            type="tel"
+            id="phone"
+            name="phone"
+            background={formBackground}
+        />
+        <Input
+            label="Grad"
+            id="city"
+            name="city"
+            background={formBackground}
+        />
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Radio
+            label="Kako ste saznali za nas?"
+            id="hear-about"
+            name="hear-about"
+            options={hearAboutOptions}
+            required
+            background={formBackground}
+        />
+        <Checkbox
+            label="Tip projekta"
+            id="project-types"
+            name="project-types"
+            options={projectTypeOptions}
+            background={formBackground}
+        />
+    </div>
+
+    <Textarea
+        label="Opišite vaš projekt"
+        id="message"
+        name="message"
+        required
+        background={formBackground}
+    />
+
+    <Checkbox
+        label="Slažem se s uvjetima korištenja i politikom privatnosti"
+        id="terms"
+        name="terms"
+        required
+        background={formBackground}
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Select
+            label="Koja usluga vas zanima?"
+            id="service"
+            name="service"
+            options={serviceOptions}
+            required
+            placeholder="Odaberite uslugu"
+            background={formBackground}
+        />
+        <Select
+            label="Budžet projekta"
+            id="budget"
+            name="budget"
+            options={budgetOptions}
+            required
+            placeholder="Odaberite budžet"
+            background={formBackground}
+        />
+    </div>
+
+    <div class="mt-6">
+        <Button type="submit">Pošaljite upit</Button>
+    </div>
+</form>

@@ -1,0 +1,135 @@
+---
+import Button from '@components/ui/Button.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay'; // not required but ensures proper styling
+
+interface HeroSlide {
+    title: string;
+    description: string;
+    buttons?: {
+        text: string;
+        link: string;
+        variant?: 'primary' | 'secondary' | 'ghostLight' | 'ghostDark';
+        target?: string;
+    }[];
+    backgroundImage?: string | ImageMetadata;
+    overlayOpacity?: number;
+}
+
+interface Props {
+    slides: HeroSlide[];
+}
+
+const { slides } = Astro.props;
+---
+
+<section class="relative">
+    <div class="swiper relative z-10">
+        <div class="swiper-wrapper">
+            {slides.map((slide, index) => (
+                <div class="swiper-slide relative">
+                    {
+                        slide.backgroundImage && (
+                            <div class="absolute inset-0 left-0 top-0 w-full h-full overflow-hidden">
+                                {typeof slide.backgroundImage === 'string' ? (
+                                    <img
+                                        src={slide.backgroundImage}
+                                        alt=""
+                                        class="w-full h-full object-cover"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding="async"
+                                    />
+                                ) : (
+                                    <Image
+                                        src={slide.backgroundImage}
+                                        alt=""
+                                        width={1920}
+                                        height={540}
+                                        class="w-full h-full object-cover"
+                                        quality={70}
+                                        format="webp"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding="async"
+                                    />
+                                )}
+                                <div
+                                    class="hero-background absolute inset-0 left-0 top-0 w-full h-full overflow-hidden"
+                                    style={`opacity: ${slide.overlayOpacity ?? 1};`}
+                                />
+                            </div>
+                        )
+                    }
+                    
+                    <div
+                        class="site-container mx-auto px-4 py-large relative z-20 flex flex-col items-center justify-center text-center min-h-screen"
+                    >
+                        <h1 class="text-white text-balance" data-aos="fade-up">
+                            {slide.title}
+                        </h1>
+                        <p
+                            class="text-white mt-2 text-balance"
+                            data-aos="fade-up"
+                            data-aos-delay="100"
+                        >
+                            {slide.description}
+                        </p>
+                        {
+                            slide.buttons && slide.buttons.length > 0 && (
+                                <div class="flex flex-wrap justify-center items-center gap-4 mt-8" data-aos="fade-up">
+                                    {slide.buttons.map(button => (
+                                        <Button
+                                            href={button.link}
+                                            target={button.target || '_self'}
+                                            variant={button.variant || 'primary'}
+                                        >
+                                            {button.text}
+                                        </Button>
+                                    ))}
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            ))}
+        </div>
+        <div class="swiper-button-prev text-gray-500"></div>
+        <div class="text-gray-500 swiper-button-next"></div>
+        <div class="swiper-pagination text-gray-500"></div>
+    </div>
+</section>
+
+<script>
+    import Swiper from 'swiper';
+    import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+    Swiper.use([Navigation, Pagination, Autoplay]);
+    new Swiper('.swiper', {
+        direction: 'horizontal', // left to right
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        speed: 300,
+        autoplay: {
+            delay: 5000, // 5 seconds
+            disableOnInteraction: false, // continue autoplay after user interaction
+        },
+    });
+</script>
+
+<style>
+    .swiper-button-next,
+    .swiper-button-prev,
+    .swiper-pagination {
+        color: #bdbdbd !important; /* blue-500 */
+        /* Optionally: change hover/focus/active! */
+    }
+</style>

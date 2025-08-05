@@ -1,0 +1,23 @@
+---
+import HashtagCategory from '../ui/HashtagCategory.astro';
+
+interface Props {
+  validCategories: string[];
+}
+
+const { validCategories } = Astro.props;
+---
+<div class="absolute bottom-4 left-4 flex flex-wrap">
+  {validCategories.map(categoryName => (
+    <div class="category-tag">
+      <HashtagCategory category={categoryName} />
+    </div>
+  ))}
+</div>
+<script>
+  document
+    .querySelectorAll('div.category-tag')
+    .forEach(e =>
+      e.addEventListener('click', event => event.stopPropagation())
+    );
+</script>

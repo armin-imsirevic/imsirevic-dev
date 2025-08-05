@@ -1,0 +1,53 @@
+---
+import { legalMenu } from '@data/menu';
+import { siteConfig } from '@data/config';
+import Logo from '@components/Logo.astro';
+
+interface ButtonProps {
+    text: string;
+    link: string;
+    target?: string;
+}
+
+interface Props {
+    footerCta?: {
+        title: string;
+        description: string;
+        hideCta: boolean;
+        button: ButtonProps;
+    };
+}
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class={`bg-black text-white pb-small pt-5`}>
+    <div class="site-container mx-auto px-4">
+        <div
+            class="mt-8 gap-6 flex flex-col md:flex-row justify-between items-center"
+        >
+            <nav>
+                <ul class="flex flex-wrap gap-6">
+                    {
+                        legalMenu.map(item => (
+                            <li>
+                                <a
+                                    href={item.link}
+                                    class="text-sm text-body-dark hover:text-white transition-colors"
+                                >
+                                    {item.name}
+                                </a>
+                            </li>
+                        ))
+                    }
+
+                </ul>
+            </nav>
+            <Logo variant="footer" />
+            <span class="text-sm">
+                © {currentYear}
+                {siteConfig.companyName}. All rights reserved.
+            </span>
+        </div>
+    </div>
+</footer>
