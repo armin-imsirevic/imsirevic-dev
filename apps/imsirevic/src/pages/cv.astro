@@ -26,6 +26,12 @@ import "../styles/global.css";
             name="Armin Imširević"
             email="armin.imsirevic@outlook.com"
         />
+        <div id="summary" class="mb-3">
+        <SectionTitle title="Summary" />
+        <div class="text-xs mt-1 mb-3 dark:text-white">
+            Full Stack Engineer with 8+ years of experience delivering scalable backend systems and frontend applications for enterprise platforms. Proven track record in leading technical delivery, modernizing legacy systems, and mentoring cross-functional teams. Skilled in .NET, Java, Kotlin, React, and cloud-native architectures. Delivered features that increased platform revenue, reduced technical debt, and improved performance.
+            Experienced in core banking and telecom infrastructure (CPaaS, SMS).
+        </div>
         
         <div id="employment" class="mb-3">
             <SectionTitle title="EMPLOYMENT" />
@@ -36,10 +42,11 @@ import "../styles/global.css";
                 location="Zagreb, Croatia"
                 typeOfEmployment="Hybrid"
                 descriptionList={[
-                    "Led architecture and delivery of enterprise systems using .NET, React, Kotlin, Node.js, and Java.",
+                    "<b>Led</b> architecture and delivery of enterprise systems using <b>.NET, React, Kotlin, Node.js, and Java</b>.",
                     "Gained full technical autonomy to define practices, select libraries, and lead implementation.",
-                    "Mentored 5 engineers, raising team delivery standards across testing, design, and quality.",
-                    "Onboarded high-volume clients, resulting in a ~12% increase in Infobip's SMS traffic.",
+                    "<b>Mentored 5 engineers</b>, raising team delivery standards across testing, design, and quality.",
+                    "<b>Onboarded high-volume clients</b>, resulting in a <b>~12% increase in Infobip's SMS traffic</b>.",
+                    "<b>Introduced unit testing</b> in a React project and integrated it as a <b>permanent step in the CI/CD pipeline</b>."
                 ]}
             />
             <RowEntry
@@ -49,20 +56,20 @@ import "../styles/global.css";
                 location="Zagreb, Croatia"
                 typeOfEmployment="Remote"
                 descriptionList={[
-                    "Rebuilt legacy login/signup systems, cutting auth-related bug reports by ~80% and reducing tech debt by ~65%.",
-                    "Rapidly upskilled in Kotlin and C#, contributing across multiple stacks (.NET, Java, Node, React).",
-                    "Integrated internal and external systems to boost platform extensibility and performance.",
+                    "<b>Rebuilt legacy login/signup systems</b>, cutting auth-related bug reports by <b>~80%</b> and reducing tech debt by <b>~65%</b>.",
+                    "Rapidly upskilled in <b>Kotlin and C#</b>, contributing across multiple stacks (.NET, Java, Node, React).",
+                    "Integrated internal and external systems to <b>boost platform extensibility and performance</b>.",
                 ]}
             />
             <RowEntry
                 companyName="Oradian"
-                title="Full Stack Software Engineer"
+                title="React/Scala Software Engineer"
                 timeSpan={{ start: "Sep. 2018", end: "Jun. 2020" }}
                 typeOfEmployment="Remote"
                 location="Zagreb, Croatia"
                 descriptionList={[
                     "Shipped React features on top of Scala services for Oradian's banking platform.",
-                    "Learned React and taught Scala to frontend engineers to enable better cross-stack collaboration.",
+                    "<b>Learned React</b> and <b>taught Scala</b> to frontend engineers to enable better cross-stack collaboration.",
                     "Delivered production-grade UI under pressure in coordination with product and UX.",
                 ]}
             />
@@ -74,7 +81,7 @@ import "../styles/global.css";
                 location="Zagreb, Croatia"
                 descriptionList={[
                     "Developed scalable Scala-based backend features for the core banking engine.",
-                    "Built a revenue-driving feature that contributed to an ~8% increase in company revenue.",
+                    "<b>Built a revenue-driving feature</b> that contributed to an <b>~8% increase in company revenue</b>.",
                     "Improved system reliability and throughput by optimizing service-level data flows.",
                 ]}
             />
@@ -85,8 +92,8 @@ import "../styles/global.css";
                 typeOfEmployment="Onsite"
                 location="Zagreb, Croatia"
                 descriptionList={[
-                    "Automated tests using Selenium, boosting code coverage from ~10% to ~60%.",
-                    "Identified and resolved critical issues, reducing production bugs significantly."
+                    "Automated tests using <b>Selenium</b>, boosting code coverage from <b>~10%</b> to <b>~60%</b>.",
+                    "Identified and resolved critical issues, <b>reducing production bugs significantly</b>."
                 ]}
             />
         </div>
@@ -96,6 +103,7 @@ import "../styles/global.css";
             <RowEntry
                 companyName="RIT Croatia"
                 location="Zagreb, Croatia"
+                graduationYear="2017"
                 descriptionList={[
                     "Bachelor’s Degree, Information Technology"
                 ]}

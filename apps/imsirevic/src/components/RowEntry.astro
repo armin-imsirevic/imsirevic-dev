@@ -6,6 +6,7 @@ export interface Props {
         start: string;
         end: string;
     };
+    graduationYear?: string;
     location?: string;
     typeOfEmployment?: string;
     descriptionList?: string[];
@@ -36,7 +37,7 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
                     </div>
                 )}
                 <div class="text-[10px] sm:text-xs italic">
-                    {Astro.props.location}
+                    {Astro.props.location} {Astro.props.graduationYear ? `(${Astro.props.graduationYear})` : ''}
                 </div>
             </div>
         </div>
@@ -46,14 +47,13 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
         <slot />
         {/* If descriptionList is provided, display it */}
         {descriptionList && descriptionList.length == 1 && (
-            <div class="text-xs dark:text-white">
-                {descriptionList[0]}
+            <div class="text-xs dark:text-white" set:html={descriptionList[0]}>
             </div>
         )}
         {descriptionList && descriptionList.length > 1 && (
             <ul class="list-disc pl-6 text-xs dark:text-white">
                 {descriptionList.map((item: string) => (
-                    <li>{item}</li>
+                    <li set:html={item}></li>
                 ))}
             </ul>
         )}
