@@ -54,7 +54,8 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
         {descriptionList && descriptionList.length > 1 && (
             <ul class="list-disc pl-6 text-xs dark:text-white">
                 {descriptionList.map((item: string) => (
-                    <li>{item}</li>
+                    // eslint-disable-next-line astro/no-conflict-set-directives
+                    <li set:html={item}>{item}</li>
                 ))}
             </ul>
         )}
