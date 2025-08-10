@@ -47,13 +47,14 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
         <slot />
         {/* If descriptionList is provided, display it */}
         {descriptionList && descriptionList.length == 1 && (
-            <div class="text-xs dark:text-white" set:html={descriptionList[0]}>
+            <div class="text-xs dark:text-white">
+                {descriptionList[0]}
             </div>
         )}
         {descriptionList && descriptionList.length > 1 && (
             <ul class="list-disc pl-6 text-xs dark:text-white">
                 {descriptionList.map((item: string) => (
-                    <li set:html={item}></li>
+                    <li>{item}</li>
                 ))}
             </ul>
         )}
