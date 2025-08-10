@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@layer base {
+.text-as-small-as-possible {
+    @apply text-sm font-bold text-blue-500;
+}
+}
+
+@layer components {
+    .text-as-high-as-possible {
+        @apply text-5xl font-bold text-blue-500;
+    }
+}
+
