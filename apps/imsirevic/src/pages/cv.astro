@@ -16,8 +16,8 @@ import "../styles/global.css";
         <title>CV</title>
     </head>
     <body class="dark:bg-black">
-        <button id="dark-mode-toggle" class="mt-2 mb-2">
-            <Icon name="tabler:sun" class="h-6 w-6 dark:text-white" />
+        <button id="dark-mode-toggle print:hidden" class="mt-2 mb-2">
+            <Icon name="tabler:sun" class=" print:hidden h-6 w-6 dark:text-white" />
         </button>
 
         <Title
@@ -25,13 +25,12 @@ import "../styles/global.css";
             country="Croatia"
             name="Armin Imširević"
             email="armin.imsirevic@outlook.com"
+            phone="+385 99 4744 841"
         />
         <div id="summary" class="mb-3">
         <SectionTitle title="Summary" />
         <div class="text-xs mt-1 mb-3 dark:text-white">
-            Full Stack Engineer with 8+ years of experience designing and delivering cloud-native, microservices-based enterprise platforms in highly regulated industries (banking, telecom). Hands-on expertise in Java (Spring Boot, Spring Cloud), React, Kotlin, .NET, and Node.js, with strong knowledge of Kubernetes, SQL/NoSQL, and event-driven systems (Kafka, AMQP). Proven track record of collaborating closely with Product and UX teams to deliver secure, intuitive, and scalable applications. Advocate of Agile best practices, including TDD, pair programming, and continuous improvement, with extensive experience mentoring engineers and modernizing legacy systems to boost performance, security, and maintainability.
-        </div>
-        
+            Full Stack Engineer with <b>8+ years of experience</b> delivering scalable backend systems and frontend applications for enterprise platforms. Proven track record in leading technical delivery, modernizing legacy systems, and mentoring cross-functional teams. Skilled in .NET, Java (Spring Boot), Kotlin, React, Node.js, and cloud-native architectures with Kubernetes, SQL/SQL Server, Elasticsearch, and Kafka. Experienced in stakeholder communication, architectural decision-making, and problem-solving in Agile environments. Delivered features that increased platform revenue, reduced technical debt, and improved performance. Experienced in core banking and telecom infrastructure (CPaaS, SMS).        </div>
         <div id="employment" class="mb-3">
             <SectionTitle title="EMPLOYMENT" />
             <RowEntry
@@ -40,13 +39,16 @@ import "../styles/global.css";
                 timeSpan={{ start: "Feb. 2023", end: "Present" }}
                 location="Zagreb, Croatia"
                 typeOfEmployment="Hybrid"
-                descriptionList={[
-                    "<b>Led</b> architecture and delivery of cloud-native microservices using <b>Java (Spring Boot), .NET, React, Kotlin, and Node.js</b>, deployed on Kubernetes.",
-                    "<b>Mentored 5 engineers</b>, raising team delivery standards across testing, design, and quality.",
-                    "<b>Onboarded high-volume clients</b>, resulting in a <b>~12% increase in Infobip's SMS traffic</b>.",
-                    "<b>Introduced unit testing</b> in a React project and integrated it as a <b>permanent step in the CI/CD pipeline</b>.",
-                    "Practiced <b>Agile best practices</b> including TDD, pair programming, and frequent retrospectives to drive <b>continuous improvement</b> in delivery quality."
-                ]}
+                descriptionList={
+                    [
+                        "Led design and delivery of <b>cloud-native microservices</b> using <b>Java (Spring Boot)</b>, <b>.NET</b>, <b>React</b>, <b>Kotlin</b>, and <b>Node.js</b>, deployed on <b>Kubernetes</b> for high-volume enterprise workloads.",
+                        "Established engineering best practices, selected frameworks/libraries, and set <b>scalable architecture</b> standards.",
+                        "Mentored <b>5 engineers</b> through <b>pair programming</b>, <b>code reviews</b>, and <b>design sessions</b>, raising team delivery standards.",
+                        "Delivered secure, high-volume client onboarding flows with <b>cross-functional teams</b>, driving a <b>~12% increase</b> in SMS traffic.",
+                        "Integrated <b>unit and integration testing</b> into the CI/CD pipeline, reducing regression defects and improving release confidence.",
+                        "Applied <b>Agile practices</b> (TDD, iterative delivery) to accelerate development cycles and maintain high code quality."
+                    ]
+                }
             />
             <RowEntry
                 companyName="Infobip"
@@ -54,12 +56,13 @@ import "../styles/global.css";
                 timeSpan={{ start: "Jun. 2020", end: "Feb. 2023" }}
                 location="Zagreb, Croatia"
                 typeOfEmployment="Remote"
-                descriptionList={[
-                    "<b>Rebuilt legacy login/signup systems</b> into scalable, secure microservices, cutting auth-related bug reports by <b>~80%</b> and reducing tech debt by <b>~65%</b>.",
-                    "Partnered with Product and UX to refine authentication workflows, improving user onboarding speed and security.",
-                    "Rapidly upskilled in <b>Kotlin and C#</b>, contributing across multiple stacks (.NET, Java, Node, React).",
-                    "Collaborated with Product and UX to align frontend UI with backend capabilities under tight delivery timelines.",
-                ]}
+                descriptionList={
+                    [
+                        "Rebuilt legacy login and signup systems into <b>secure microservices</b>, improving onboarding speed, cutting auth-related bug reports by <b>~80%</b>, and reducing tech debt by <b>~65%</b>.",
+                        "Delivered <b>Kafka to Elasticsearch</b> pipeline for high-volume audit logs, enabling real-time search, analytics, and compliance reporting at scale.",
+                        "Contributed across multiple stacks (<b>.NET</b>, <b>Java</b>, <b>Node.js</b>, <b>React</b>) after rapid upskilling in <b>Kotlin</b> and <b>C#</b>, delivering production features across backend and frontend systems."
+                    ]
+                }
             />
             <RowEntry
                 companyName="Oradian"
@@ -68,9 +71,9 @@ import "../styles/global.css";
                 typeOfEmployment="Remote"
                 location="Zagreb, Croatia"
                 descriptionList={[
-                    "Shipped React features on top of Scala services for Oradian's banking platform.",
-                    "<b>Learned React</b> and <b>taught Scala</b> to frontend engineers to enable better cross-stack collaboration.",
-                    "Delivered production-grade UI under pressure in coordination with product and UX.",
+                    "Developed <b>React</b> features integrated with <b>Scala</b> backend services for a core banking platform.",
+                    "Provided <b>Scala</b> training to frontend engineers, improving cross-stack collaboration and delivery efficiency.",
+                    "Collaborated with <b>cross-functional teams</b> to deliver production-grade UI features under tight deadlines."
                 ]}
             />
             <RowEntry
@@ -80,20 +83,8 @@ import "../styles/global.css";
                 typeOfEmployment="Remote"
                 location="Zagreb, Croatia"
                 descriptionList={[
-                    "Developed scalable Scala-based backend features for the core banking engine.",
-                    "<b>Built a revenue-driving feature</b> that contributed to an <b>~8% increase in company revenue</b>.",
-                    "Improved system reliability and throughput by optimizing service-level data flows.",
-                ]}
-            />
-            <RowEntry
-                companyName="Oradian"
-                title="QA Engineer (Intern)"
-                timeSpan={{ start: "Jun. 2016", end: "Jan. 2017" }}
-                typeOfEmployment="Onsite"
-                location="Zagreb, Croatia"
-                descriptionList={[
-                    "Automated tests using <b>Selenium</b>, boosting code coverage from <b>~10%</b> to <b>~60%</b>.",
-                    "Identified and resolved critical issues, <b>reducing production bugs significantly</b>."
+                    "Built scalable <b>Scala</b> backend features for the core banking engine, including a revenue-driving capability that increased company revenue by <b>~8%</b>.",
+                    "Automated tests using Selenium, boosting code coverage from ~10% to <b>~60%</b> and significantly reducing production bugs."
                 ]}
             />
         </div>
@@ -112,13 +103,13 @@ import "../styles/global.css";
 
         <div id="skills" class="mb-6">
             <SectionTitle title="Skills" />
-            <span class="text-[14px] font-bold">Core Stack</span>
-            <ul class="list-disc pl-6 text-xs dark:text-white">
+            <span class="text-[12px] font-bold">Core Stack</span>
+            <ul class="list-disc pl-6 text-[11px] dark:text-white">
                 <li>
                     <span class="font-bold">Frontend:</span> React.js, TypeScript, JavaScript, Redux, HTML, CSS
                 </li>
                 <li>
-                    <span class="font-bold">Backend:</span> Node.js, Java (Spring Boot), Kotlin, Scala, C#, .NET, SQL, MongoDB, Kafka
+                    <span class="font-bold">Backend:</span> Node.js, Java (Spring Boot), Kotlin, Scala, C#, .NET, .NET Core, SQL, SQL Server, Elasticsearch, Kafka
                 </li>
                 <li>
                     <span class="font-bold">Architecture:</span> Microservices, Cloud-native design, Event-Driven Architecture, Distributed Systems, RESTful APIs
@@ -130,8 +121,8 @@ import "../styles/global.css";
                     <span class="font-bold">Cloud & DevOps:</span> Docker, Kubernetes, CI/CD, Git, Jenkins, Postman
                 </li>
             </ul>
-            <span class="text-[14px] font-bold">Tools & Practices</span>
-            <ul class="list-disc pl-6 text-xs dark:text-white">
+            <span class="text-[12px] font-bold">Tools & Practices</span>
+            <ul class="list-disc pl-6 text-[11px] dark:text-white">
                 <li>
                     Visual Studio Code, IntelliJ IDEA, Rider, JIRA, Confluence
                 </li>
@@ -139,15 +130,21 @@ import "../styles/global.css";
                     Agile, Scrum, TDD, CI/CD, System Design, Code Review, Mentoring
                 </li>
             </ul>
-            <span class="text-[14px] font-bold">Languages</span>
-            <ul class="list-disc pl-6 text-xs dark:text-white">
+            <span class="text-[12px] font-bold">Soft Skills</span>
+            <ul class="list-disc pl-6 text-[11px] dark:text-white">
+                <li>
+                    Mentoring, Cross-functional Collaboration, Stakeholder Communication, Architectural Decision-making, Problem-solving, Continuous Improvement
+                </li>
+            </ul>
+            <span class="text-[12px] font-bold">Languages</span>
+            <ul class="list-disc pl-6 text-[11px] dark:text-white">
                 <li>
                     English, Croatian
                 </li>
             </ul>
         </div>
 
-        <div id="social" class="mb-2 flex flex-row justify-center">
+        <div id="social" class="print:hidden mb-2 flex flex-row justify-center">
             <div class="mr-4">
                 <SocialIcon
                     icon="fa-brands:github"

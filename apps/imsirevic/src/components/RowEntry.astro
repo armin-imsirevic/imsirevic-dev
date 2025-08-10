@@ -18,25 +18,25 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
     <div class="flex flex-row dark:text-white">
         <div class="mb-1 flex w-full items-center justify-between">
             <div class="flex-1 dark:text-white">
-                <div class="text-xs sm:text-sm font-bold">
+                <div class="text-xs sm:text-[11px] font-bold">
                     {companyName}
                 </div>
-                <div class="text-xs italic">
+                <div class="text-[10px] italic">
                     {Astro.props.typeOfEmployment}
                 </div>
             </div>
-            <div class="flex-1 text-center text-xs sm:text-sm font-bold dark:text-white">
+            <div class="flex-1 text-center text-xs sm:text-[12px] font-bold dark:text-white">
                 {title}
             </div>
             <div class="flex-1 text-right dark:text-white">
                 {timeSpan?.start && timeSpan?.end && (
-                    <div class="text-[10px] sm:text-sm font-bold items-end justify-end">
+                    <div class="text-[10px] sm:text-[11px] font-bold items-end justify-end">
                         <span>{timeSpan.start}</span>
                         <span>-</span>
                         <span>{timeSpan.end}</span>
                     </div>
                 )}
-                <div class="text-[10px] sm:text-xs italic">
+                <div class="text-[8px] sm:text-[10px] italic">
                     {Astro.props.location} {Astro.props.graduationYear ? `(${Astro.props.graduationYear})` : ''}
                 </div>
             </div>
@@ -47,12 +47,12 @@ const { companyName, title, timeSpan, descriptionList } = Astro.props;
         <slot />
         {/* If descriptionList is provided, display it */}
         {descriptionList && descriptionList.length == 1 && (
-            <div class="text-xs dark:text-white">
+            <div class="text-[11px] dark:text-white">
                 {descriptionList[0]}
             </div>
         )}
         {descriptionList && descriptionList.length > 1 && (
-            <ul class="list-disc pl-6 text-xs dark:text-white">
+            <ul class="list-disc pl-6 text-[11px] dark:text-white">
                 {descriptionList.map((item: string) => (
                     // eslint-disable-next-line astro/no-conflict-set-directives
                     <li set:html={item}>{item}</li>

@@ -1,13 +1,15 @@
 ---
-const { city, country, name, email } = Astro.props;
+const { city, country, name, email, phone } = Astro.props;
 ---
 <div class="mb-3 flex flex-col w-full items-center justify-between">
-    <div class="sm:order-1 order-1 flex-1 text-center text-xl font-bold dark:text-white">
+    <div class="sm:order-1 order-1 flex-1 text-center text-lg font-bold dark:text-white">
         {name}
     </div>
-    <div class="order-3 flex-1 flex flex-row text-sm dark:text-white sm:text-right">
+    <div class="order-3 flex-1 flex flex-row text-[11px] dark:text-white sm:text-right">
         <span>{city}, {country}</span>
         <span class="ml-1 mr-1">{` | `}</span>
         <span>{email}</span>
+        <span class="ml-1 mr-1">{` | `}</span>
+        <span>{phone}</span>
     </div>
 </div>
