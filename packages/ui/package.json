@@ -1,12 +1,26 @@
 {
   "name": "@imsirevic/ui",
-  "private": false,
-  "version": "1.0.0",
+  "description": "A collection of Astro components",
+  "author": "Armin Imsirevic",
   "type": "module",
-  "files": ["*.astro", "*.js", "src/**", "images/**"],
-  "exports": { ".": "./index.js" },
-  "peerDependencies": {
-    "astro": "5.12.9",
-    "tailwindcss": "4.1.11"
+  "version": "0.0.1",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./src/index.js"
+      }
+    }
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "astro dev --host",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "astro": "^5.11.0"
   }
 }
