@@ -1,12 +1,12 @@
 {
-  "name": "ui",
+  "name": "@imsirevic/ui",
+  "private": false,
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "type": "module",
+  "files": ["*.astro", "*.js", "src/**", "images/**"],
+  "exports": { ".": "./index.js" },
+  "peerDependencies": {
+    "astro": "5.12.9",
+    "tailwindcss": "4.1.11"
+  }
 }
