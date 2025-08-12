@@ -1,1 +1,2 @@
-@import "tailwindcss";
+@import "tailwindcss" source("../../"); /* base = monorepo root */
+@source "../../packages/ui";            /* scan the shared UI package */

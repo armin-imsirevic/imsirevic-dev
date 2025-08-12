@@ -1,14 +1,9 @@
 {
   "name": "imsirevic-dev",
-  "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "imsirevic": "cd apps/imsirevic && npm run dev"
+    "imsirevic": "cd apps/imsirevic && npm run dev",
+    "playground": "cd apps/playground && npm run dev"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "private": true,
   "workspaces": ["apps/*", "packages/*"]
 }
